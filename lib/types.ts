@@ -1,5 +1,4 @@
 export type InputPayload = {
-  urls: string[];
   pdfBase64?: string;
   objective?: string;
 };
@@ -27,13 +26,36 @@ export type SiteSection = {
   id: string;
   title: string;
   body: string;
+  bullets?: string[];
+};
+
+export type SiteStat = {
+  label: string;
+  value: string;
+};
+
+export type SiteService = {
+  title: string;
+  description: string;
+};
+
+export type SiteProject = {
+  name: string;
+  summary: string;
+  outcomes: string[];
+  stack: string[];
 };
 
 export type SitePlan = {
   brandName: string;
   tagLine: string;
   heroBlurb: string;
-  cta: string;
+  ctaPrimary: string;
+  ctaSecondary: string;
+  highlights: string[];
+  stats: SiteStat[];
+  services: SiteService[];
+  projects: SiteProject[];
   sections: SiteSection[];
 };
 
@@ -45,6 +67,9 @@ export type ChatTurn = {
 export type GeneratedSite = {
   id: string;
   createdAt: string;
+  updatedAt: string;
+  status: "draft" | "published";
+  publishedAt: string | null;
   profile: ProfileSummary;
   plan: SitePlan;
   theme: ThemePreset;

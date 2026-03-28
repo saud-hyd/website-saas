@@ -1,27 +1,24 @@
-# Zero-Friction URL-to-Website Generator (OSS)
+# Resume-to-Website Builder
 
-Open-source resume/profile-to-website builder.
+Open-source website builder focused on resume PDFs.
 
-This project converts profile URLs (GitHub, YouTube, Google Maps, and general websites) plus optional PDF uploads into a generated site, supports chat-based copy/layout edits, and offers one-click Netlify deployment.
+This project converts resume PDFs into a generated interactive website and uses a draft-to-publish workflow inside a single Vercel-hosted Next.js app.
 
 ## What it does
 
-- Accepts multiple profile URLs and an optional PDF file
-- Extracts profile facts from sources
-- Synthesizes a profile summary
-- Uses Gemini (`@google/genai`) for structured site planning
-- Supports "vibe" chat edits after generation
-- Renders a bold themed static website
-- Saves generated artifacts under `generated/<site-id>`
-- Deploys generated output to Netlify in one click
+- Accepts a resume PDF upload
+- Extracts profile facts from the resume
+- Builds structured website copy using Gemini
+- Generates modern interactive drafts with in-page animations and interactions
+- Lets users test drafts first, then publish explicitly
+- Stores artifacts under `generated/<site-id>`
 
 ## Stack
 
 - Next.js App Router (TypeScript)
-- Server-side extraction via `fetch` + `cheerio`
-- PDF extraction via `pdf-parse`
-- AI generation/editing via Gemini API
-- Netlify deploy upload via zip API
+- `cheerio` for metadata extraction
+- `pdf-parse` for resume text extraction
+- Gemini API (`@google/genai`) for generation and chat edits
 
 ## Setup
 
@@ -31,40 +28,39 @@ This project converts profile URLs (GitHub, YouTube, Google Maps, and general we
 npm install
 ```
 
-2. Copy env file and configure
+2. Configure environment variables
 
 ```bash
 cp .env.example .env.local
 ```
 
-Required env vars:
+Required:
 
 - `GEMINI_API_KEY`
-- `GEMINI_MODEL` (optional, default `gemini-3.1-pro-preview`)
-- `NETLIFY_AUTH_TOKEN` (for deploy button)
-- `NETLIFY_SITE_ID` (for deploy button)
+Optional:
+- `GEMINI_MODEL` (default: `gemini-3.1-pro-preview`)
 
-3. Start development server
+3. Run
 
 ```bash
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open [http://localhost:3000](http://localhost:3000).
 
 ## API routes
 
 - `POST /api/generate`
-  - Body: `urls: string[]`, `pdfBase64?: string`, `objective?: string`
-- `POST /api/chat-edit`
-  - Body: `id: string`, `message: string`, `history?: { role: "user" | "model"; text: string }[]`
-- `POST /api/deploy`
+  - Body: `pdfBase64?: string`, `objective?: string`
+  - Creates a draft site and returns a preview URL
+- `POST /api/publish`
   - Body: `id: string`
+  - Promotes draft to published
 - `GET /render/<id>`
-  - Serves generated static HTML
+  - Serves draft preview HTML
+- `GET /site/<id>`
+  - Serves published live HTML only
 
 ## Notes
 
-- LinkedIn ingestion is intentionally not included in this OSS version.
-- Some websites may block scraping; extraction is best-effort.
-- GitHub API use may hit rate limits without authentication.
+- Gemini API key is required for generation.

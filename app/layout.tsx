@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Zero-Friction URL-to-Website",
-  description: "Generate and deploy standout websites from profile URLs or PDF uploads.",
+  description: "Generate and publish standout websites from profile URLs or PDF uploads.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

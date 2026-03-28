@@ -2,6 +2,17 @@ import type { ThemePreset } from "./types";
 
 export const THEMES: ThemePreset[] = [
   {
+    id: "studio-clean",
+    name: "Studio Clean",
+    bodyClass: "theme-studio-clean",
+    css: `
+:root { --bg: #0b0f17; --ink: #eef2ff; --muted: #a1acc7; --accent: #34d399; --accent-2: #38bdf8; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Manrope", "Space Grotesk", "Segoe UI", sans-serif; color: var(--ink); background: radial-gradient(circle at 20% 0%, #1b2a4a, transparent 55%), radial-gradient(circle at 80% 20%, #0b3b2c, transparent 50%), #0b0f17; }
+.page { max-width: 1100px; margin: 0 auto; padding: 48px 24px 90px; }
+`,
+  },
+  {
     id: "neo-brutal",
     name: "Neo Brutal Blast",
     bodyClass: "theme-neo-brutal",
@@ -65,6 +76,9 @@ body { margin: 0; font-family: "Fraunces", Georgia, serif; color: var(--ink); ba
 ];
 
 export function chooseTheme(seed: string): ThemePreset {
+  const preferred = THEMES.find((theme) => theme.id === "studio-clean");
+  if (preferred) return preferred;
+
   const hash = Array.from(seed).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
   return THEMES[Math.abs(hash) % THEMES.length];
 }

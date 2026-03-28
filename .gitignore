@@ -4,3 +4,5 @@ node_modules
 generated/*
 !generated/.gitkeep
 tsconfig.tsbuildinfo
+dev.log
+dev.err
